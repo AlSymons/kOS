@@ -1,0 +1,1 @@
+runpath("0:/basiclauncher",80000,90,40000,false).
