@@ -1,4 +1,4 @@
-DECLARE PARAMETER rerunOnly is true, safeECPercent is 50.
+DECLARE PARAMETER rerunOnly is true, safeECPercent is 50, continuous is 5. //continuous: run once every x seconds.
 
 LOCAL partsList is SHIP:PARTS.
 LOCAL partsIt is partsList:ITERATOR.
@@ -29,61 +29,73 @@ if rerunOnly
 PRINT "Minimum safe EC: "+safeECPercent+"% ("+safeEC+").".
 PRINT " ".
 
-		
-LOCAL totalSci is 0.
-LOCAL grandTotalSci is 0.
-LOCAL noDataPasses is 0.
-UNTIL noDataPasses > 1
+
+UNTIL false
 {
-	SET totalSci to 0.
-	LOCAL sciModListIt is sciModList:ITERATOR.
-	UNTIL sciModListIt:NEXT = false
+	LOCAL totalSci is 0.
+	LOCAL grandTotalSci is 0.
+	LOCAL noDataPasses is 0.
+
+	UNTIL noDataPasses > 1
 	{
-		LOCAL exp is sciModListIt:VALUE.
-		LOCAL done is false.
-		UNTIL done
+		SET totalSci to 0.
+		LOCAL sciModListIt is sciModList:ITERATOR.
+		UNTIL sciModListIt:NEXT = false
 		{
-			if exp:hasdata //sci module has data.
+			LOCAL exp is sciModListIt:VALUE.
+			LOCAL done is false.
+			UNTIL done
 			{
-				LOCAL dataList is exp:data.
-				LOCAL dataListIt is dataList:ITERATOR.
-				UNTIL dataListIt:NEXT = false
+				if exp:hasdata //sci module has data.
 				{
-					if dataListIt:VALUE:transmitvalue > 0 //it's worth something. send it.
+					LOCAL dataList is exp:data.
+					LOCAL dataListIt is dataList:ITERATOR.
+					UNTIL dataListIt:NEXT = false
 					{
-						LOCAL sciValue is dataListIt:VALUE:transmitvalue.
-						SET totalSci TO totalSci + sciValue.
-						PRINT dataListIt:VALUE:title.
-						PRINT round(dataListIt:VALUE:transmitvalue,1) + " science.".
-						IF SHIP:ELECTRICCHARGE < safeEC
-							PRINT "Waiting for "+safeEC+" electric charge.".
-						WAIT UNTIL SHIP:ELECTRICCHARGE >= safeEC.
-						PRINT "Transmitting...".
-						sciModListIt:VALUE:TRANSMIT().
-						WAIT UNTIL dataListIt:VALUE:transmitvalue < sciValue.
-					}
-					else //got data but it's worth nothing.
-					{
-						if exp:RERUNNABLE
-						{	
-							exp:RESET().
-							WAIT UNTIL exp:hasdata = false.
-							//PRINT "RESETTING " + dataListIt:VALUE:title.
+						if dataListIt:VALUE:transmitvalue > 0 //it's worth something. send it.
+						{
+							LOCAL sciValue is dataListIt:VALUE:transmitvalue.
+							SET totalSci TO totalSci + sciValue.
+							PRINT dataListIt:VALUE:title.
+							PRINT round(dataListIt:VALUE:transmitvalue,1) + " science.".
+							IF SHIP:ELECTRICCHARGE < safeEC
+								PRINT "Waiting for "+safeEC+" electric charge.".
+							WAIT UNTIL SHIP:ELECTRICCHARGE >= safeEC.
+							PRINT "Transmitting...".
+							sciModListIt:VALUE:TRANSMIT().
+							WAIT UNTIL dataListIt:VALUE:transmitvalue < sciValue.
+							PRINT "Done.".
+							
 						}
-						SET done to true.
+						else //got data but it's worth nothing.
+						{
+							if exp:RERUNNABLE
+							{	
+								exp:RESET().
+								WAIT UNTIL exp:hasdata = false.
+								//PRINT "RESETTING " + dataListIt:VALUE:title.
+							}
+							SET done to true.
+						}
 					}
 				}
-			}
-			else
-			{
-				exp:DEPLOY().
-				WAIT UNTIL exp:HASDATA.
+				else
+				{
+					exp:DEPLOY().
+					WAIT UNTIL exp:HASDATA.
+				}
 			}
 		}
+		SET grandTotalSci TO grandTotalSci + totalSci.
+		if totalSci = 0
+			SET noDataPasses TO noDataPasses + 1.
+	//	else PRINT "Total science transmitted this pass: "+round(totalSci,1)+".".
 	}
-	SET grandTotalSci TO grandTotalSci + totalSci.
-	if totalSci = 0
-		SET noDataPasses TO noDataPasses + 1.
-//	else PRINT "Total science transmitted this pass: "+round(totalSci,1)+".".
+	
+	if continuous = false
+	{
+		PRINT round(grandTotalSci,1) + " science transmitted.".
+		break.
+	}
+	else wait continuous.
 }
-PRINT round(grandTotalSci,1) + " science transmitted.".
