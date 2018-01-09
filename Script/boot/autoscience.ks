@@ -87,8 +87,34 @@ UNTIL false
 				}
 				else
 				{
-					exp:DEPLOY().
-					WAIT UNTIL exp:HASDATA.
+					if exp:inoperable
+						SET done to true.
+					else
+					{
+						if exp:hasAction("Log Seismic Data")
+						{
+							if ship:status = "LANDED"
+							{
+								exp:DEPLOY().
+								WAIT UNTIL exp:HASDATA.
+							}
+							else SET done to true.
+						}
+						if exp:hasAction("Log Gravity Data")
+						{
+							if ship:status <> "FLYING"
+							{
+								exp:DEPLOY().
+								WAIT UNTIL exp:HASDATA.
+							}
+							SET done to true.
+						}
+						if not exp:hasAction("Log Seismic Data") and not exp:hasAction("Log Gravity Data")
+						{
+							exp:DEPLOY().
+							WAIT UNTIL exp:HASDATA.
+						}
+					}
 				}
 			}
 		}
