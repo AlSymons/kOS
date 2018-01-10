@@ -50,6 +50,13 @@ FUNCTION isruOn
 		{
 			LOCAL resMod is convertotron[0]:GETMODULEBYINDEX(moduleIt:INDEX).
 			
+			//this actually stacks with lqdfuel and ox for speed in and of itself, however makes the heat steps larger
+			//and thus will spend more time cooling down with insufficient radiators.
+			//In this regime the fastest production is done by staying as hot as possible without lowering thermal efficiency.
+			if coreTemp < (tgtTemp - 100) and lf and ox and SHIP:LIQUIDFUEL < maxLF and SHIP:OXIDIZER < maxOX
+				if resMod:HASEVENT("start isru [lf+ox]")
+					resMod:DOEVENT("start isru [lf+ox]").
+			
 			if lf and SHIP:LIQUIDFUEL < maxLF
 				if resMod:HASEVENT("start isru [lqdfuel]")
 					resMod:DOEVENT("start isru [lqdfuel]").
@@ -73,6 +80,8 @@ FUNCTION isruOff
 		{
 			LOCAL resMod is convertotron[0]:GETMODULEBYINDEX(moduleIt:INDEX).
 			
+			if resMod:HASEVENT("stop isru [lf+ox]")
+				resMod:DOEVENT("stop isru [lf+ox]").
 			if resMod:HASEVENT("stop isru [lqdfuel]")
 				resMod:DOEVENT("stop isru [lqdfuel]").
 			if resMod:HASEVENT("stop isru [ox]")
@@ -111,3 +120,4 @@ UNTIL SHIP:CONTROL:PILOTPITCH <> 0
 		WAIT 0.01.
 	}
 }
+isruOff.
