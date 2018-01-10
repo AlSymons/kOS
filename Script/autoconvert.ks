@@ -1,11 +1,6 @@
-//print convertotron[0]:GETMODULE("ModuleOverHeatDisplay"):GETFIELD("core temp").
-//"975.00 K / 1000.00 K"
-
-//print convertotron[0]:GETMODULE("ModuleOverHeatDisplay"):GETFIELD("core temp"):find("K").
-//8
-
-//print convertotron[0]:GETMODULE("ModuleOverHeatDisplay"):GETFIELD("core temp"):remove(6,14).
-//"975.00"
+//Automatic heat manager for an ISRU craft with insufficient radiators to run at max efficiency
+//I haven't bothered making it work with multiple convert-o-trons as the use case for this would be exactly:
+//A craft with multiple convert-o-trons and sufficient radiators to run some, but not all, efficiently indefinitely.
 
 DECLARE PARAMETER lf is true, ox is true, mono is true, desiredOre is 10.
 
@@ -30,7 +25,7 @@ UNTIL resIT:NEXT = false
 	if resIT:VALUE:NAME = "Monopropellant"
 		SET maxMono TO maxMono + resIT:VALUE:CAPACITY.
 
-SET maxEffTemp to 1010. //TODO: determine this programatically
+SET maxEffTemp to 1010. //TODO: determine this programatically. Unable? can't get Thermal Efficiency.
 SET tgtTemp to maxEffTemp.
 SET convertotron TO SHIP:PARTSTITLEDPATTERN("Convert-O-Tron").
 
@@ -51,7 +46,7 @@ FUNCTION isruOn
 			LOCAL resMod is convertotron[0]:GETMODULEBYINDEX(moduleIt:INDEX).
 			
 			//this actually stacks with lqdfuel and ox for speed in and of itself, however makes the heat steps larger
-			//and thus will spend more time cooling down with insufficient radiators.
+			//and thus will spend more time idly cooling with insufficient radiators.
 			//In this regime the fastest production is done by staying as hot as possible without lowering thermal efficiency.
 			if coreTemp < (tgtTemp - 100) and lf and ox and SHIP:LIQUIDFUEL < maxLF and SHIP:OXIDIZER < maxOX
 				if resMod:HASEVENT("start isru [lf+ox]")
@@ -71,6 +66,7 @@ FUNCTION isruOn
 		}
 	}
 }
+
 FUNCTION isruOff
 {
 	LOCAL moduleIt is convertotron[0]:modules:ITERATOR.
@@ -100,6 +96,9 @@ UNTIL SHIP:CONTROL:PILOTPITCH <> 0
 	if SHIP:ORE > desiredOre
 		drills off.
 	else
+		drills on.
+
+	if coreTemp < (tgtTemp - 100)
 		drills on.
 
 	PRINT "Convert-O-Tron Core temperature: "+coreTemp+".".
