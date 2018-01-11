@@ -25,13 +25,13 @@ UNTIL resIT:NEXT = false
 	if resIT:VALUE:NAME = "Monopropellant"
 		SET maxMono TO maxMono + resIT:VALUE:CAPACITY.
 
-SET maxEffTemp to 1010. //TODO: determine this programatically. Unable? can't get Thermal Efficiency.
-SET tgtTemp to maxEffTemp.
-SET convertotron TO SHIP:PARTSTITLEDPATTERN("Convert-O-Tron").
+LOCAL maxEffTemp is 1010. //TODO: determine this programatically. Unable? can't get Thermal Efficiency.
+LOCAL tgtTemp is maxEffTemp.
+LOCAL convertotron is SHIP:PARTSTITLEDPATTERN("Convert-O-Tron").
 
 FUNCTION coreTemp
 {
-	SET coreTempStr TO convertotron[0]:GETMODULE("ModuleOverHeatDisplay"):GETFIELD("core temp").
+	LOCAL coreTempStr is convertotron[0]:GETMODULE("ModuleOverHeatDisplay"):GETFIELD("core temp").
 	SET coreTempStr TO coreTempStr:remove(coreTempStr:find("K"),13).
 	return coreTempStr:TONUMBER(9001).
 }

@@ -5,6 +5,7 @@ PRINT "game saved to '_Script start'".
 SAS OFF.
 GEAR OFF. WAIT 0.1. GEAR ON.
 
+LOCK STEERING TO SHIP:SRFRETROGRADE.
 LOCK gravityHere to CONSTANT:G*BODY:MASS/((altitude+BODY:RADIUS)^2).
 LOCK TWR to SHIP:MAXTHRUST/(gravityHere*SHIP:MASS).
 	
@@ -39,8 +40,7 @@ FUNCTION Drop
 		Drop().
 }
 
-LOCK STEERING TO SHIP:SRFRETROGRADE.
-	Drop().
+Drop().
 
 //point between retrograde and up
 LOCK STEERING TO (SHIP:SRFRETROGRADE:VECTOR + (UP:VECTOR * MAX(2,MIN(1,(1/SHIP:GROUNDSPEED^2))))).	

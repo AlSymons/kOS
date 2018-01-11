@@ -107,7 +107,7 @@ UNTIL false
 								exp:DEPLOY().
 								WAIT UNTIL exp:HASDATA.
 							}
-							SET done to true.
+							else SET done to true.
 						}
 						if not exp:hasAction("Log Seismic Data") and not exp:hasAction("Log Gravity Data")
 						{

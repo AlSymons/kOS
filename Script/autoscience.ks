@@ -1,4 +1,4 @@
-DECLARE PARAMETER rerunOnly is true, safeECPercent is 50, continuous is 5. //continuous: run once every x seconds.
+DECLARE PARAMETER rerunOnly is true, safeECPercent is 100, continuous is 5. //continuous: run once every x seconds.
 
 LOCAL partsList is SHIP:PARTS.
 LOCAL partsIt is partsList:ITERATOR.
@@ -107,7 +107,7 @@ UNTIL false
 								exp:DEPLOY().
 								WAIT UNTIL exp:HASDATA.
 							}
-							SET done to true.
+							else SET done to true.
 						}
 						if not exp:hasAction("Log Seismic Data") and not exp:hasAction("Log Gravity Data")
 						{
