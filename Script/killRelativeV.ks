@@ -1,21 +1,13 @@
-DECLARE PARAMETER tgtSeperation IS 5000.
+lock tgtRetrograde to target:velocity:orbit - ship:velocity:orbit.
+//lock tgtPrograde to -(target:velocity:orbit - ship:velocity:orbit).
+lock tgtVel to (target:velocity:orbit - ship:velocity:orbit):mag.
 
-PRINT "==| Kill Relative Velocity program running |==".
-PRINT "Waiting until target separation < " + tgtSeperation + " meters".
+lock steering to tgtRetrograde.
 
+wait until target:position:mag < 5000. //TODO: calculate this as half burn time.
+lock throttle to 1 - (1/tgtVel).
+wait until tgtVel < 1.
 
-LOCK STEERING TO targetVesse
-
-//
-
-FUNCTION dok_kill_relative_velocity
-{
-	PARAMETER targetPort.
-	
-	LOCK relativeVelocity TO SHIP:VELOCITY:ORBIT - targetPort:VELOCITY:ORBIT.
-	UNTIL relativeVelocity:MAG < 0.1
-	{
-		dok_translate(-relativeVelocity).
-	}
-	dok_translate(V(0,0,0)).
-}
+lock throttle to 0.
+set ship:control:pilotmainthrottle to 0.
+unlock all.

@@ -40,7 +40,7 @@ if MunNode:ORBIT:NEXTPATCH:PERIAPSIS < 5000
 	
 if hasnode
 	if autoexec
-		runpath("0:/execnodeprecise.ks",15,true,true).
+		runpath("0:/execnodeprecise.ks",15,true,false).
 
 
 //set dirVec to MunNode:deltav.

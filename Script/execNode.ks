@@ -88,7 +88,7 @@ until 0
 	WAIT UNTIL SHIP:MAXTHRUST > 0. //avoid /0 error from max_acc
     set throttle to 1.0001-(1/(mNode:deltav:mag*2/max_acc+1))^3.
 	//max throttle until last few seconds, drop off sharply. curve toward 0.
-	print throttle.
+	//print throttle.
 
 	//cut throttle when nd:deltav and initial deltav face opposite directions
     //this check is done via checking the dot product of those 2 vectors
