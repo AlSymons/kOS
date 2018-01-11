@@ -1,0 +1,4 @@
+T' = -2x'' - x' - x + h
+
+throttle' = 0 -(multiplier * altitude/s/s) - altitude/s - altitude + targetaltitude
+
