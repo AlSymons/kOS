@@ -9,11 +9,15 @@ STAGE.
 TOGGLE AG3.
 LOCK THROTTLE TO 1.
 
-Wait until SHIP:AIRSPEED > 130.
-SET SHIP:CONTROL:PITCH to 1.
+//Wait until SHIP:AIRSPEED > 130.
+//SET SHIP:CONTROL:PITCH to 1.
 
+//WAIT UNTIL ALT:RADAR > 3.
+//SET SHIP:CONTROL:PITCH to 0.
+
+LOCK STEERING TO HEADING(90,0). //old technique doesn't work any more, run off the end of the runway.
 WAIT UNTIL ALT:RADAR > 3.
-SET SHIP:CONTROL:PITCH to 0.
+UNLOCK ALL.
 
-RUNPATH("0:/SPACEPLANE.KS").
-RUNPATH("0:/clearboot").
+RUNPATH("0:/spaceplane.ks").
+RUNPATH("0:/setboot.ks").
