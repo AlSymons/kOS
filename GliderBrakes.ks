@@ -18,7 +18,7 @@ FUNCTION setAirBrakeLimiters
 		brakesModIt:VALUE:SETFIELD("Authority Limiter", limit).
 }
 
-UNTIL SHIP:STATUS = "Landed"
+UNTIL SHIP:STATUS = "Landed" OR SHIP:CONTROL:PILOTTOP <> 0
 {
 	setAirBrakeLimiters(x).
 	wait 0.1.

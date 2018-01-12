@@ -6,7 +6,7 @@ until SHIP:CONTROL:PILOTTOP <> 0
 {
 	//check for pilot input
 	if SHIP:CONTROL:PILOTPITCH = 0 and SHIP:CONTROL:PILOTYAW = 0 and SHIP:CONTROL:PILOTROLL = 0
-		lock STEERING TO HEADING(temptgtheading,temptgtpitch).
+		lock STEERING TO HEADING(tgtheading,tgtpitch).
 	else
 	{
 		unlock steering.
