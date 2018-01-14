@@ -35,15 +35,15 @@ WHEN SHIP:MAXTHRUST = 0 THEN
 
 FUNCTION max_acc
 {
-	if SHIP:MAXTHRUST = 0
+	if SHIP:AVAILABLETHRUST = 0
 		return 0.
-	return ship:maxthrust/ship:mass.
+	return SHIP:AVAILABLETHRUST/ship:mass.
 }
 
 set mNode to nextnode.
 
 
-WAIT UNTIL SHIP:MAXTHRUST > 0.
+WAIT UNTIL SHIP:AVAILABLETHRUST > 0.
 
 
 FUNCTION readOut
@@ -91,7 +91,7 @@ set np to mNode:deltav. //lock steering to the node as of now, don't change.
 PRINT "Executing planned maneuver. Backspace to abort.".
 until abort
 {
-	WAIT UNTIL SHIP:MAXTHRUST > 0. //avoid /0 error from max_acc
+	WAIT UNTIL SHIP:AVAILABLETHRUST > 0. //avoid /0 error from max_acc
 		set throttle to 1.0001-(1/(mNode:deltav:mag*2/max_acc+1))^3. //max throttle until last few seconds, drop off sharply. curve toward 0.
     
 	if vdot(np, mNode:deltav) <= 0 //if negative, vecs facing opposite directions - overshot.
