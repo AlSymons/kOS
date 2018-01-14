@@ -1,2 +1,836 @@
-git noob test
-testing 1 2 3
+ 
+PART(KzResizableFairingBaseRing (v2.0 Tugs Launcher Probe),uid=2995109888)
+    ProceduralFairingBase
+    KzNodeNumberTweaker
+    KzFairingBaseResizer
+    KzFairingBaseShielding
+        (get-only) parts shielded, is Int32
+    ModuleToggleCrossfeed
+        (callable) crossfeed: disabled, is KSPEvent
+        (callable) toggle crossfeed, is KSPAction
+        (callable) crossfeed: disabled, is KSPAction
+        (callable) crossfeed: enabled, is KSPAction
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(fuelTank4-2,uid=3558440960)
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(KzInterstageAdapter2,uid=1895219200)
+    ProceduralFairingAdapter
+        (callable) decouple when fairing gone: no, is KSPEvent
+    ProceduralFairingBase
+    KzNodeNumberTweaker
+    ModuleDecouple
+        (callable) decouple topnode, is KSPEvent
+        (callable) decouple topnode, is KSPAction
+    KzFairingBaseShielding
+        (get-only) parts shielded, is Int32
+    ModuleToggleCrossfeed
+        (callable) crossfeed: disabled, is KSPEvent
+        (callable) toggle crossfeed, is KSPAction
+        (callable) crossfeed: disabled, is KSPAction
+        (callable) crossfeed: enabled, is KSPAction
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+    KJRDecouplerReinforcementModule
+ 
+PART(fuelTank3-2,uid=2458550272)
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(fuelTank3-2,uid=1275772928)
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(liquidEngine1-2,uid=1839104000)
+    ModuleEngines
+        (get-only) fuel flow, is Single
+        (get-only) prop. requirement met, is Single
+        (get-only) thrust, is Single
+        (get-only) specific impulse, is Single
+        (get-only) status, is String
+        (settable) thrust limiter, is Single
+        (callable) shutdown engine, is KSPEvent
+        (callable) toggle engine, is KSPAction
+        (callable) shutdown engine, is KSPAction
+        (callable) activate engine, is KSPAction
+    ModuleJettison
+        (callable) jettison shroud, is KSPAction
+    ModuleGimbal
+        (settable) gimbal, is Boolean
+        (settable) gimbal limit, is Single
+        (callable) show actuation toggles, is KSPEvent
+        (callable) toggle gimbal, is KSPAction
+        (callable) lock gimbal, is KSPAction
+        (callable) free gimbal, is KSPAction
+        (callable) toggle gimbal pitch, is KSPAction
+        (callable) toggle gimbal yaw, is KSPAction
+        (callable) toggle gimbal roll, is KSPAction
+    FXModuleAnimateThrottle
+    ModuleAlternator
+        (get-only) alternator output, is Single
+    ModuleSurfaceFX
+    ModuleTestSubject
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(structuralWing,uid=2429206528)
+    TweakScale
+    FARWingAerodynamicModel
+        (get-only) stalled %, is Double
+    GeometryPartModule
+    FARAeroPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(structuralWing,uid=2992537600)
+    TweakScale
+    FARWingAerodynamicModel
+        (get-only) stalled %, is Double
+    GeometryPartModule
+    FARAeroPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(structuralWing,uid=940523520)
+    TweakScale
+    FARWingAerodynamicModel
+        (get-only) stalled %, is Double
+    GeometryPartModule
+    FARAeroPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(structuralWing,uid=1503854592)
+    TweakScale
+    FARWingAerodynamicModel
+        (get-only) stalled %, is Double
+    GeometryPartModule
+    FARAeroPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(SurfAntenna,uid=2394636288)
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+    ModuleRTAntenna
+        (get-only) energy, is String
+        (get-only) omni range, is String
+        (get-only) status, is String
+        (settable) target, is String | Body | Vessel
+        (callable) deactivate, is KSPEvent
+        (callable) toggle, is KSPAction
+        (callable) activate, is KSPAction
+        (callable) deactivate, is KSPAction
+    ModuleSPUPassive
+    ModuleRTDataTransmitter
+        (get-only) comms, is String
+ 
+PART(parachuteRadial,uid=2957967360)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=2185609216)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=2748940288)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=198393856)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=761724928)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=259735552)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=823066624)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=2430976000)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(probeStackSmall,uid=2994307072)
+    ModuleProbeControlPoint
+    ModuleCommand
+        (get-only) comm signal, is String
+        (get-only) comm first hop dist, is String
+        (get-only) command state, is String
+        (settable) hibernation, is Boolean
+        (settable) hibernate in warp, is Boolean
+        (callable) control from here, is KSPEvent
+        (callable) rename vessel, is KSPEvent
+        (callable) control from here, is KSPAction
+        (callable) toggle hibernation, is KSPAction
+    ModuleReactionWheel
+        (settable) reaction wheels, is Int32
+        (settable) wheel authority, is Single
+        (get-only) reaction wheels, is String
+        (callable) toggle torque, is KSPEvent
+        (callable) cycle wheel mode, is KSPAction
+        (callable) activate wheel, is KSPAction
+        (callable) deactivate wheel, is KSPAction
+        (callable) toggle rw, is KSPAction
+    ModuleSAS
+    ModuleKerbNetAccess
+        (callable) kerbnet access, is KSPEvent
+        (callable) kerbnet access, is KSPAction
+    ModuleScienceContainer
+        (callable) collect all, is KSPAction
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+    ModuleSPU
+        (get-only) spu, is String
+    ModuleRTAntennaPassive
+        (get-only) omni range, is String
+    ProbeControlRoomPart
+        (callable) iva probecontrol, is KSPEvent
+    RasterPropMonitorComputer
+    ModuleTripLogger
+    FARPM
+ 
+PART(advSasModule,uid=1570422784)
+    ModuleReactionWheel
+        (settable) reaction wheels, is Int32
+        (settable) wheel authority, is Single
+        (get-only) reaction wheels, is String
+        (callable) toggle torque, is KSPEvent
+        (callable) cycle wheel mode, is KSPAction
+        (callable) activate wheel, is KSPAction
+        (callable) deactivate wheel, is KSPAction
+        (callable) toggle rw, is KSPAction
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(advSasModule,uid=2133753856)
+    ModuleReactionWheel
+        (settable) reaction wheels, is Int32
+        (settable) wheel authority, is Single
+        (get-only) reaction wheels, is String
+        (callable) toggle torque, is KSPEvent
+        (callable) cycle wheel mode, is KSPAction
+        (callable) activate wheel, is KSPAction
+        (callable) deactivate wheel, is KSPAction
+        (callable) toggle rw, is KSPAction
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(KR-2042,uid=3461726208)
+    kOSProcessor
+        (get-only) kos disk space, is Int32
+        (get-only) kos average power, is Single
+        (callable) open terminal, is KSPEvent
+        (callable) toggle power, is KSPEvent
+        (callable) open terminal, is KSPAction
+        (callable) close terminal, is KSPAction
+        (callable) toggle terminal, is KSPAction
+        (callable) toggle power, is KSPAction
+    ModuleLight
+        (get-only) light status, is String
+        (callable) lights on, is KSPEvent
+        (callable) toggle light, is KSPAction
+        (callable) turn light on, is KSPAction
+        (callable) turn light off, is KSPAction
+    kOSLightModule
+        (get-only) required power for lights, is Single
+        (settable) light r, is Single
+        (settable) light g, is Single
+        (settable) light b, is Single
+        (get-only) power starved, is Boolean
+        (get-only) last requested power, is Single
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(ksp.r.largeBatteryPack,uid=344391680)
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(ksp.r.largeBatteryPack,uid=1679278080)
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(ksp.r.largeBatteryPack,uid=2242609152)
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(ksp.r.largeBatteryPack,uid=1039974400)
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(KzProcFairingFuselage2,uid=1603305472)
+    ProceduralFairingSide
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(KzProcFairingFuselage2,uid=3907600384)
+    ProceduralFairingSide
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(KzProcFairingFuselage2,uid=175964160)
+    ProceduralFairingSide
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(KzProcFairingFuselage2,uid=636469248)
+    ProceduralFairingSide
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=1199800320)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=4111482880)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=379846656)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=1157513216)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=1720844288)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=290045952)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=853377024)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(parachuteRadial,uid=1826242560)
+    RealChuteFAR
+        (settable) min pressure, is Single
+        (settable) altitude, is Single
+        (get-only) spare chutes, is Int32
+        (callable) disarm chute, is KSPEvent
+        (callable) toggle info, is KSPEvent
+        (callable) deploy chute, is KSPAction
+        (callable) cut chute, is KSPAction
+        (callable) disarm chute, is KSPAction
+    ModuleTestSubject
+    ModuleDragModifier
+    ModuleDragModifier
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(airbrake1,uid=2389573632)
+    ModuleAeroSurface
+        (settable) authority limiter, is Single
+        (settable) pitch, is Boolean
+        (settable) yaw, is Boolean
+        (settable) deploy, is Boolean
+        (callable) toggle, is KSPAction
+        (callable) toggle deploy, is KSPAction
+        (callable) extend, is KSPAction
+        (callable) retract, is KSPAction
+    FXModuleLookAtConstraint
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(airbrake1,uid=2235777024)
+    ModuleAeroSurface
+        (settable) authority limiter, is Single
+        (settable) pitch, is Boolean
+        (settable) yaw, is Boolean
+        (settable) deploy, is Boolean
+        (callable) toggle, is KSPAction
+        (callable) toggle deploy, is KSPAction
+        (callable) extend, is KSPAction
+        (callable) retract, is KSPAction
+    FXModuleLookAtConstraint
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(airbrake1,uid=2799108096)
+    ModuleAeroSurface
+        (settable) authority limiter, is Single
+        (settable) pitch, is Boolean
+        (settable) yaw, is Boolean
+        (settable) deploy, is Boolean
+        (callable) toggle, is KSPAction
+        (callable) toggle deploy, is KSPAction
+        (callable) extend, is KSPAction
+        (callable) retract, is KSPAction
+    FXModuleLookAtConstraint
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(airbrake1,uid=4188422144)
+    ModuleAeroSurface
+        (settable) authority limiter, is Single
+        (settable) pitch, is Boolean
+        (settable) yaw, is Boolean
+        (settable) deploy, is Boolean
+        (callable) toggle, is KSPAction
+        (callable) toggle deploy, is KSPAction
+        (callable) extend, is KSPAction
+        (callable) retract, is KSPAction
+    FXModuleLookAtConstraint
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(airbrake1,uid=456785920)
+    ModuleAeroSurface
+        (settable) authority limiter, is Single
+        (settable) pitch, is Boolean
+        (settable) yaw, is Boolean
+        (settable) deploy, is Boolean
+        (callable) toggle, is KSPAction
+        (callable) toggle deploy, is KSPAction
+        (callable) extend, is KSPAction
+        (callable) retract, is KSPAction
+    FXModuleLookAtConstraint
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(airbrake1,uid=3259613184)
+    ModuleAeroSurface
+        (settable) authority limiter, is Single
+        (settable) pitch, is Boolean
+        (settable) yaw, is Boolean
+        (settable) deploy, is Boolean
+        (callable) toggle, is KSPAction
+        (callable) toggle deploy, is KSPAction
+        (callable) extend, is KSPAction
+        (callable) retract, is KSPAction
+    FXModuleLookAtConstraint
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(airbrake1,uid=3822944256)
+    ModuleAeroSurface
+        (settable) authority limiter, is Single
+        (settable) pitch, is Boolean
+        (settable) yaw, is Boolean
+        (settable) deploy, is Boolean
+        (callable) toggle, is KSPAction
+        (callable) toggle deploy, is KSPAction
+        (callable) extend, is KSPAction
+        (callable) retract, is KSPAction
+    FXModuleLookAtConstraint
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent
+ 
+PART(airbrake1,uid=858603520)
+    ModuleAeroSurface
+        (settable) authority limiter, is Single
+        (settable) pitch, is Boolean
+        (settable) yaw, is Boolean
+        (settable) deploy, is Boolean
+        (callable) toggle, is KSPAction
+        (callable) toggle deploy, is KSPAction
+        (callable) extend, is KSPAction
+        (callable) retract, is KSPAction
+    FXModuleLookAtConstraint
+    TweakScale
+    GeometryPartModule
+    FARAeroPartModule
+    FARPartModule
+    KOSNameTag
+        (get-only) name tag, is String
+        (callable) change name tag, is KSPEvent

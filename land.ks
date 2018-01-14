@@ -31,18 +31,20 @@ FUNCTION TimeToImpact
 
 FUNCTION Drop
 {
+	Print "Dropping.".
 	LOCK THROTTLE TO 0.
 
 	WAIT UNTIL TimeToImpact(50) <= BurnTime((-SHIP:VERTICALSPEED + SHIP:GROUNDSPEED)*1.1).
 	LOCK THROTTLE TO 1.
 
 	WAIT UNTIL SHIP:VERTICALSPEED > -100.
-	IF ALT:RADAR > 100 * TWR
+	if ALT:RADAR > 100 * TWR
 		Drop().
 }
+if ALT:RADAR > 100 * TWR
+	Drop().
 
-Drop().
-
+Print "On final approach to surface. Proportional Throttle engaged.".
 //point between retrograde and up
 LOCK STEERING TO (SHIP:SRFRETROGRADE:VECTOR + (UP:VECTOR * MAX(2,MIN(1,(1/SHIP:GROUNDSPEED^2))))).	
 

@@ -114,7 +114,7 @@ set tgtMode to 0.
 IF mNode:ORBIT:HASNEXTPATCH
 	set tgtMode to 1.
 
-if tgtMode = 1 until 0
+if tgtMode = 1 until abort
 {
 	//TODO: numpatches caused an exception when KSP max patched conics set higher
 	//but not until it predicted a bunch of flybys

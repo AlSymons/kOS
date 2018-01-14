@@ -1,5 +1,5 @@
 DECLARE PARAMETER tgtSpeed IS 7.
-UNTIL 0
+UNTIL abort
 {
 	IF SHIP:GROUNDSPEED > tgtSpeed
 		BRAKES ON.

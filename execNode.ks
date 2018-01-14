@@ -90,8 +90,8 @@ until mNode:eta <= (burn_duration/2)
 unlock np.
 set np to mNode:deltav. //lock steering to the node as of now, don't change.
 
-PRINT "Executing planned maneuver.".
-until 0
+PRINT "Executing planned maneuver. Backspace to abort.".
+until abort
 {
 	WAIT UNTIL SHIP:MAXTHRUST > 0. //avoid /0 error from max_acc
 		set throttle to 1.0001-(1/(mNode:deltav:mag*2/max_acc+1))^3. //max throttle until last few seconds, drop off sharply. curve toward 0.

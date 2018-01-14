@@ -8,6 +8,7 @@ FUNCTION max_acc
 lock tgtRetrograde to TARGET:VELOCITY:ORBIT - SHIP:VELOCITY:ORBIT.
 lock tgtVel to (TARGET:VELOCITY:ORBIT - SHIP:VELOCITY:ORBIT):MAG.
 //lock tgtPrograde to -(target:velocity:orbit - ship:velocity:orbit).
+SAS OFF.
 lock steering to tgtRetrograde.
 
 wait until VANG(SHIP:FACING:VECTOR, tgtRetrograde) < 1.
