@@ -1,7 +1,6 @@
 DECLARE PARAMETER warpCancelTime IS 15, autoStage IS true, doWarp IS false.
 
 WAIT UNTIL SHIP:UNPACKED. //need this to ensure boot works?
-
 WAIT 1. //RT takes a little longer
 
 CORE:PART:GETMODULE("kOSProcessor"):DOEVENT("Open Terminal").
@@ -12,12 +11,11 @@ PRINT "Time warping mode: " + doWarp.
 if (doWarp)
 	PRINT "Warp cancel buffer: " + warpCancelTime + " seconds.".
 
-//todo if file exists etc
-IF ADDONS:RT:HASCONNECTION(SHIP) //does work
+IF ADDONS:RT:HASCONNECTION(SHIP)
 {
-	COPYPATH("0:/execNode.ks","1:/boot/execNode.ks"). //volume out of range error. wat.
+	COPYPATH("0:/execNode.ks","1:/boot/execNode.ks").
 	COPYPATH("0:/setBoot.ks","1:/setBoot.ks").
-}
+} //else nothing because it's running on reboot.
 RUNPATH("1:/setBoot.ks","/boot/execNode.ks").
 
 SAS OFF.

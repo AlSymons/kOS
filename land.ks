@@ -1,3 +1,5 @@
+DECLARE PARAMETER engineSpoolTime is 0. //set to 2 for those stupid low profile engines
+
 WAIT UNTIL KUNIVERSE:CANQUICKSAVE.
 KUNIVERSE:QUICKSAVETO("_Script start").
 PRINT "game saved to '_Script start'".
@@ -36,6 +38,7 @@ FUNCTION Drop
 
 	WAIT UNTIL TimeToImpact(50) <= BurnTime((-SHIP:VERTICALSPEED + SHIP:GROUNDSPEED)*1.1).
 	LOCK THROTTLE TO 1.
+	WAIT engineSpoolTime.
 
 	WAIT UNTIL SHIP:VERTICALSPEED > -100.
 	if ALT:RADAR > 100 * TWR
