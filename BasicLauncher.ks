@@ -87,13 +87,18 @@ UNTIL SHIP:APOAPSIS >= tgtApoapsis
 	autoStage.
 
 PRINT "Target apoapsis achieved. Awaiting atmospheric escape.".
-	
-UNTIL SHIP:PERIAPSIS > 0 OR SHIP:ALTITUDE > 70000 OR ETA:APOAPSIS > 90
-	autoStage.
+
+//UNTIL SHIP:PERIAPSIS > 0 OR SHIP:ALTITUDE > 70000 OR ETA:APOAPSIS > 90 //wtf even is this?
+//	autoStage.
 
 LOCK THROTTLE TO 0.
 
+SET KUNIVERSE:TIMEWARP:MODE TO "PHYSICS".
+SET WARP TO 3.
+
 WAIT UNTIL ALTITUDE > 70000.
+
+SET WARP TO 0.
 
 if (extendPanels)
 	PANELS ON.
@@ -104,11 +109,13 @@ RUNPATH("0:/execnode",5,true,true).
 
 IF SHIP:PERIAPSIS < 70000
 {
+	PRINT "Periapsis < 70000. Correcting.".
 	//this can happen if stage transition substantially lowers max acceleration during mNode
 	//because the time to node burn calculation is increased. TODO: execnode handles that.
 	LOCK STEERING TO PROGRADE.
-	LOCK THROTTLE TO 1 - SHIP:PERIAPSIS / 70000.
+	LOCK THROTTLE TO 1.05 - SHIP:PERIAPSIS / 70000.
 	WAIT UNTIL SHIP:PERIAPSIS > 70000.
+	LOCK THROTTLE TO 0.
 }
 
 UNLOCK ALL.

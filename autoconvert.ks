@@ -2,7 +2,7 @@
 //I haven't bothered making it work with multiple convert-o-trons as the use case for this would be exactly:
 //A craft with multiple convert-o-trons and sufficient radiators to run some, but not all, efficiently indefinitely.
 
-DECLARE PARAMETER lf is true, ox is true, mono is true, desiredOre is 10.
+DECLARE PARAMETER desiredOre is 10, lf is true, ox is true, mono is true.
 
 LOCAL maxLF is 0.
 LOCAL res is SHIP:RESOURCES.

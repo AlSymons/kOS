@@ -102,19 +102,19 @@ PRINT "Executing planned maneuver. Backspace to abort.".
 until abort
 {
 	WAIT UNTIL SHIP:AVAILABLETHRUST > 0. //avoid /0 error from max_acc
-		set throttle to 1.0001-(1/(mNode:deltav:mag*2/max_acc+1))^3. //max throttle until last few seconds, drop off sharply. curve toward 0.
+	set throttle to 1.35-(1/((2*mNode:deltav:mag/max_acc)+0.75)). //Curve from 1 to 0 throttle during last second.
     
 	if vdot(np, mNode:deltav) <= 0 //if negative, vecs facing opposite directions - overshot.
     {
-        print "Maneuver complete. Error margin: " + round(mNode:deltav:mag,5) + "m/s.".
         lock throttle to 0.
+        print "Maneuver complete. Error margin: " + round(mNode:deltav:mag,5) + "m/s.".
         break.
     }
 }
-
-RUNPATH("1:/setBoot.ks").
-
-unlock all.
+lock throttle to 0.
 SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 
 remove mNode.
+unlock all.
+
+RUNPATH("1:/setBoot.ks").
