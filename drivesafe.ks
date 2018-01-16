@@ -2,7 +2,7 @@ DECLARE PARAMETER maxSpeed is 10, vehicleInstability is 1.
 
 SET NAVMODE TO "SURFACE".
 BRAKES OFF.
-SAS OFF.
+SAS OFF. //TODO: add automatic pitch/roll adjustment
 RCS OFF.
 
 LOCK tgtAngle to VANG(ship:facing:vector,TARGET:POSITION).
@@ -11,7 +11,7 @@ LOCK tgtAngleL to VANG(-ship:facing:starvector,TARGET:POSITION).
 SET steer to 0.
 SET tgtSpeed to 0.
 
-UNTIL SHIP:CONTROL:PILOTTOP <> 0 OR TARGET:POSITION:MAG < maxSpeed^2/2
+UNTIL SHIP:CONTROL:PILOTTOP <> 0 OR TARGET:POSITION:MAG < MAX(50,maxSpeed^2/2)
 {
 	PRINT "Cruising speed: "+maxSpeed+".".
 	PRINT "Target speed: "+tgtSpeed+".".
@@ -27,7 +27,7 @@ UNTIL SHIP:CONTROL:PILOTTOP <> 0 OR TARGET:POSITION:MAG < maxSpeed^2/2
 		PRINT "GOING BACKWARD? NOPE".
 		LOCK WHEELTHROTTLE TO 0.
 		BRAKES ON.
-		WAIT UNTIL SHIP:GROUNDSPEED < 0.01.
+		WAIT UNTIL SHIP:GROUNDSPEED < 0.1.
 	}
 
 	IF tgtAngleR < tgtAngleL //Target is to the right

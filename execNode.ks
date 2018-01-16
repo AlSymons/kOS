@@ -18,6 +18,8 @@ IF ADDONS:RT:HASCONNECTION(SHIP)
 } //else nothing because it's running on reboot.
 RUNPATH("1:/setBoot.ks","/boot/execNode.ks").
 
+set mNode to nextnode.
+
 SAS OFF.
 WHEN SHIP:MAXTHRUST = 0 THEN
 {
@@ -40,8 +42,13 @@ FUNCTION max_acc
 	return SHIP:AVAILABLETHRUST/ship:mass.
 }
 
-set mNode to nextnode.
+FUNCTION burn_duration
+{
+	if max_acc = 0
+		return 0.
+	return mNode:deltav:mag/max_acc.
 
+}
 
 WAIT UNTIL SHIP:AVAILABLETHRUST > 0.
 
@@ -49,11 +56,12 @@ WAIT UNTIL SHIP:AVAILABLETHRUST > 0.
 FUNCTION readOut
 {
 	clearscreen.
-	print "Node in: " + round(mNode:eta,2) + ". DeltaV: " + round(mNode:deltav:mag,2) + "m/s.".
-	set burn_duration to mNode:deltav:mag/max_acc.
-	print "Crude Estimated burn duration: " + round(burn_duration,2) + "s".
+	print "Node in: "+round(mNode:eta,2)+".".
+	print "Burn in: "+round(mNode:eta - burn_duration/2,2)+".".
+	print "DeltaV: "+round(mNode:deltav:mag,2)+"m/s.".
+	print "Crude Estimated burn duration: "+round(burn_duration,2)+"s".
 	if doWarp and warp > 0 print "Warping.".
-	wait 0.01.
+	wait 0.05.
 }
 
 readOut.
@@ -82,9 +90,11 @@ until mNode:eta < burn_duration/2 + warpCancelTime*2
 
 SET WARP TO 0.
 
-until mNode:eta <= (burn_duration/2)
+until mNode:eta <= (burn_duration/2) + 1
 	readOut.
 
+wait until mNode:eta <= (burn_duration/2).
+	
 unlock np.
 set np to mNode:deltav. //lock steering to the node as of now, don't change.
 
