@@ -89,7 +89,10 @@ FUNCTION isruOff
 }
 
 //main loop
-UNTIL SHIP:CONTROL:PILOTPITCH <> 0
+panels on.
+radiators on.
+abort off.
+UNTIL abort
 {
 	clearscreen.
 	
@@ -120,3 +123,4 @@ UNTIL SHIP:CONTROL:PILOTPITCH <> 0
 	}
 }
 isruOff.
+Print "Program ended. ISRU off.".

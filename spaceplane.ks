@@ -20,7 +20,7 @@ SAS off.
 Gear off.
 
 lock steering to heading(90,15).
-lock targetspeed to max(200,altitude / 10).
+lock targetspeed to max(200,altitude / 20).
 lock throttle to targetspeed / SHIP:AIRSPEED.
 
 wait until altitude > 2500.
@@ -33,6 +33,7 @@ wait until altitude > 12000.
 lock steering to heading(90,5).
 
 Toggle ag2. // Afterburner
+lock throttle to 1.
 Waituntiltopspeed.
 
 set warp to 0.
@@ -59,6 +60,7 @@ UNTIL apoapsis > 75000
 		}
 		if numOut > 0 { Toggle ag1. Toggle ag2. }.
 	}
+	wait 0.1.
 }
 
 lock throttle to 0.
@@ -82,3 +84,4 @@ WAIT UNTIL KUNIVERSE:CANQUICKSAVE.
 KUNIVERSE:QUICKSAVETO("_Script finished").
 PRINT "game saved to '_Script finished'".
 //RUNPATH("0:/PAUSEGAME.KS"). doesn't work. the pause part anyway.
+panels on.

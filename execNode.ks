@@ -50,6 +50,9 @@ FUNCTION burn_duration
 
 }
 
+if mNode:eta <= (burn_duration/2)
+	throw("Missed the maneuver node.").
+
 WAIT UNTIL SHIP:AVAILABLETHRUST > 0.
 
 
@@ -99,6 +102,7 @@ unlock np.
 set np to mNode:deltav. //lock steering to the node as of now, don't change.
 
 PRINT "Executing planned maneuver. Backspace to abort.".
+abort off.
 until abort
 {
 	WAIT UNTIL SHIP:AVAILABLETHRUST > 0. //avoid /0 error from max_acc

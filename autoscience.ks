@@ -1,5 +1,8 @@
 DECLARE PARAMETER rerunOnly is true, safeECPercent is 100, continuous is 5. //continuous: run once every x seconds.
 
+CORE:PART:GETMODULE("kOSProcessor"):DOEVENT("Open Terminal").
+//LOCK STEERING TO SUN:POSITION.
+
 LOCAL partsList is SHIP:PARTS.
 LOCAL partsIt is partsList:ITERATOR.
 LOCAL sciModList is LIST().

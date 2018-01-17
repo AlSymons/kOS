@@ -1,8 +1,10 @@
 DECLARE PARAMETER engineSpoolTime is 0. //set to 2 for those stupid low profile engines
 
-WAIT UNTIL KUNIVERSE:CANQUICKSAVE.
-KUNIVERSE:QUICKSAVETO("_Script start").
-PRINT "game saved to '_Script start'".
+if KUNIVERSE:CANQUICKSAVE
+{
+	KUNIVERSE:QUICKSAVETO("_Script start").
+	PRINT "game saved to '_Script start'".
+}
 
 SAS OFF.
 GEAR ON.
