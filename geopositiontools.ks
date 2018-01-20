@@ -1,25 +1,33 @@
-PRINT "SHIP:GEOPOSITION: ".
-PRINT SHIP:GEOPOSITION.
-PRINT " ".
-PRINT "BODY:GEOPOSITIONOF(SHIP:POSITION):".
-PRINT BODY:GEOPOSITIONOF(SHIP:POSITION).
-PRINT " ".
+print "SHIP:GEOPOSITION: ".
+print SHIP:GEOPOSITION.
+print " ".
+print "BODY:GEOPOSITIONOF(SHIP:POSITION):".
+print BODY:GEOPOSITIONOF(SHIP:POSITION).
+print " ".
 
-function terrainHeightPosition //relative to ship
+function terrainHeightAt //relative to ship
 {
-	PARAMETER inPos is V(0,0,0).	
+	parameter inPos is V(0,0,0).	
 	return BODY:GEOPOSITIONOF(SHIP:POSITION + inPos):TERRAINHEIGHT.
 }
 
 
 function slopeAt
 {
-	PARAMETER geoPos is SHIP:GEOPOSITION, sampleWidth is 1.
-	LOCAL originHeight is geoPos:TERRAINHEIGHT.	
-	LOCAL foreHeight is terrainHeightPosition(SHIP:FACING:VECTOR * sampleWidth).
-	LOCAL aftHeight is terrainHeightPosition(SHIP:FACING:VECTOR * -sampleWidth).
-	LOCAL starbHeight is terrainHeightPosition(SHIP:STAR:STARVECTOR * sampleWidth).
-	LOCAL portHeight is terrainHeightPosition(SHIP:STAR:STARVECTOR * -sampleWidth).
+	parameter pos is SHIP:POSITION, sampleWidth is 1.
+	local originHeight is pos:TERRAINHEIGHT.	
+	local maxDelta is 0.
+	local rot is 0.
+		
+	until rot > 359
+	{
+		set maxDelta to abs(terrainHeightAt(pos) - terrainHeightAt(SHIP:FACING:VECTOR * R(0,rot,0):VECTOR)
+		
+	}
+	//LOCAL foreHeight is terrainHeightAt(SHIP:FACING:VECTOR * sampleWidth).
+	//LOCAL aftHeight is terrainHeightAt(SHIP:FACING:VECTOR * -sampleWidth).
+	//LOCAL starbHeight is terrainHeightAt(SHIP:STAR:STARVECTOR * sampleWidth).
+	//LOCAL portHeight is terrainHeightAt(SHIP:STAR:STARVECTOR * -sampleWidth).
 	
 	
 	
@@ -27,10 +35,10 @@ function slopeAt
 abort off.
 until abort
 {
-	PRINT "Altitude of terrain here: " + SHIP:GEOPOSITION:TERRAINHEIGHT.
-	PRINT "Altitude of terrain 10m ahead:" + BODY:GEOPOSITIONOF(SHIP:POSITION + (SHIP:FACING:VECTOR * 10)):TERRAINHEIGHT.
-	PRINT " ".
-	PRINT "Terrain height position from function: " + terrainHeightPosition.
+	print "Altitude of terrain here: " + SHIP:GEOPOSITION:TERRAINHEIGHT.
+	print "Altitude of terrain 10m ahead:" + BODY:GEOPOSITIONOF(SHIP:POSITION + (SHIP:FACING:VECTOR * 10)):TERRAINHEIGHT.
+	print " ".
+	print "Terrain height position from function: " + terrainHeightAt.
 	
 	wait 0.1.
 	
