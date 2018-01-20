@@ -22,25 +22,47 @@ UNTIL NOT SHIP:CONTROL:PILOTTOP = 0
 	
 	//////////////////////////////////////
 	
-	SET facevec TO VECDRAW(
+	SET bearingvec TO VECDRAW(
 		  V(0,0,0), //start
-		  SHIP:FACING:FOREVECTOR, //vector
-		  RGB(1,1,1), //colour
-		  "SHIP:FACING:FOREVECTOR", //words
+		  VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:FACING:VECTOR), //vector
+		  RGB(1,0,0), //colour
+		  "Ship bearing", //words
+		  2.0, //scale
+		  TRUE, //show
+		  0.1 //width 
+		).
+
+	SET forevec TO VECDRAW(
+		  V(0,0,0), //start
+		  SHIP:FACING:VECTOR, //vector
+		  RGB(0.5,0.5,0.5), //colour
+		  "SHIP:FACING", //words
+		  3.0, //scale
+		  TRUE, //show
+		  0.1 //width 
+		).
+
+	SET upvec TO VECDRAW(
+		  V(0,0,0), //start
+		  SHIP:UP:VECTOR, //vector
+		  RGB(0.5,0.5,0.5), //colour
+		  "SHIP:UP", //words
+		  3.0, //scale
+		  TRUE, //show
+		  0.1 //width 
+		).
+
+	SET starvec TO VECDRAW(
+		  V(0,0,0), //start
+		  SHIP:FACING:STARVECTOR, //vector
+		  RGB(0.5,0.5,0.5), //colour
+		  "SHIP:FACING:STARVECTOR", //words
 		  3.0, //scale
 		  TRUE, //show
 		  0.1 //width 
 		).
 		
-	SET upvec TO VECDRAW(
-		  V(0,0,0), //start
-		  SHIP:UP:FOREVECTOR, //vector
-		  RGB(1,1,1), //colour
-		  "SHIP:UP:FOREVECTOR", //words
-		  3.0, //scale
-		  TRUE, //show
-		  0.1 //width 
-		).
+	
 	
 	//////////////////////////////////////
 	
