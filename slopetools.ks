@@ -23,7 +23,7 @@ function slopeAt
 	until rot > 359
 	{
 		set bearingVec to VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:FACING:VECTOR):NORMALIZED * sampleWidth.
-		set maxDelta to max(maxDelta,abs(terrainHeightAt(pos) - terrainHeightAt(bearingVec * R(0,rot,0)))).
+		set maxDelta to max(maxDelta,abs(originHeight - terrainHeightAt(bearingVec * R(0,rot,0)))).
 		set rot to rot + 45.
 	}
 	
@@ -41,6 +41,8 @@ until abort
 	print " ".
 	print "Slope value here: " + slopeAt.
 	print "Slope 10m ahead: " + slopeAt(SHIP:POSITION + VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:FACING:VECTOR):NORMALIZED * 10).
+	print "Slope 50m ahead: " + slopeAt(SHIP:POSITION + VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:FACING:VECTOR):NORMALIZED * 50).
+	print "Slope 100m ahead: " + slopeAt(SHIP:POSITION + VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:FACING:VECTOR):NORMALIZED * 100).
 
-	wait 0.1.
+	wait 1.
 }
