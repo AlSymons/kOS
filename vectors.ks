@@ -24,7 +24,7 @@ UNTIL NOT SHIP:CONTROL:PILOTTOP = 0
 	
 	SET bearingvec TO VECDRAW(
 		  V(0,0,0), //start
-		  VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:FACING:VECTOR), //vector
+		  VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:FACING:VECTOR):NORMALIZED, //vector
 		  RGB(1,0,0), //colour
 		  "Ship bearing", //words
 		  2.0, //scale
