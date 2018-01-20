@@ -1,4 +1,5 @@
-local debug is true.
+local debug is false.
+set config:ipu to 2000.
 
 lock shipBearingVec to VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:FACING:VECTOR):NORMALIZED.
 
@@ -25,17 +26,15 @@ function terrainHeightAt
 
 function slopeAt
 {
-	parameter pos is SHIP:POSITION, sampleWidth is 5, numSamples is 200.
+	parameter pos is SHIP:POSITION, sampleWidth is 5, numSamples is 3.
 	local originHeight is terrainHeightAt(pos).
 	local maxDelta is 0.
 	local rot is 0.
-	local bearingDir is SHIP:FACING.
+	local bearingDir is LOOKDIRUP(shipBearingVec,SHIP:UP:VECTOR).
 	
 	//check the terrain height in different directions
 	until rot > 359
 	{
-		set bearingDir to LOOKDIRUP(shipBearingVec,SHIP:UP:VECTOR).
-		
 		if debug
 		{
 			SET debugVec2 TO VECDRAW(
@@ -50,13 +49,10 @@ function slopeAt
 		}
 
 		set maxDelta to max(maxDelta,abs(originHeight - terrainHeightAt(pos + (bearingDir * R(0,rot,0)):VECTOR * sampleWidth))).
-		
-		
-		//set maxDelta to max(maxDelta,abs(originHeight - terrainHeightAt(pos + ((bearingVec * R(rot,0,0)) * sampleWidth)))).
 		set rot to rot + (360 / numSamples).
 	}
 	
-	return maxDelta.
+	return arcsin(min(1,(maxDelta / sampleWidth))).
 }
 
 abort off.
@@ -73,5 +69,5 @@ until abort
 	print "Slope 50m ahead: " + slopeAt(SHIP:POSITION + (shipBearingVec * 50)).
 	print "Slope 100m ahead: " + slopeAt(SHIP:POSITION + (shipBearingVec * 100)).
 
-	wait 1.
+	wait 0.01.
 }
