@@ -5,25 +5,29 @@ wait until SHIP:MAXTHRUST > 0.
 lock gravityHere to CONSTANT:G*BODY:MASS/((SHIP:ALTITUDE+BODY:RADIUS)^2).
 lock TWR to SHIP:MAXTHRUST/(gravityHere*SHIP:MASS).
 
-//functio ThrottleTWR
-//{
-//	PARAMETER inTWR is 1.0.
-//	return 1/TWR * inTWR.
-//}
+local mP is 0.1. local mI is 0.1. local mD is 0.1.
+local lastP is 0. local lastTime is 0. local totalI is 0.
 
-local mP is 0.1.
-local mI is 0.1.
-local mD is 0.1.
-local cI is 1.
+function resetHoverPID
+{
+	local startTWR is 1/TWR.
 
-local lastP is 0.
-local lastTime is 0.
-local totalI is 0.
+	set mP to startTWR.
+	set mI to startTWR.
+	set mD to startTWR.
+	
+	set lastP to 0.
+	set lastTime to 0.
+	set totalI to 0.
+}
 
-function pid
+function hoverPID
 {
 	PARAMETER target.
-	PARAMETER current.
+
+	local current is SHIP:APOAPSIS.
+	if SHIP:VERTICALSPEED < -1
+		set current to SHIP:ALTITUDE.
 
 	local now is TIME:SECONDS.
 
@@ -32,19 +36,15 @@ function pid
 	local D is 0.
 
 	IF lastTime > 0
-	{                   //explicitly alt here, not apo
-		if abs(target - SHIP:ALTITUDE) < (target / 20) //accumulate I only when error is small
+	{                
+		if abs(target - SHIP:ALTITUDE) < (target / 20)
 			set I to totalI + ((P + lastP)/2 * (now - lastTime)).
 		else set I to 0.
 
-		//set I to min(1,cI/mI).
-		//set I to max(-1,-(cI/mI)).
-			
 		set D to (P - lastP) / (now - lastTime). // dP / dT
 	}
 
 	local output is P * mP + I * mI + D * mD.
-	//local output is (P * mP * 1/TWR) + (I * mI * 1/TWR) + (D * mD * 1/TWR).
 
 	clearscreen.
 	print "P: " + P * mP.
@@ -59,21 +59,22 @@ function pid
 	return output.
 }
 
+local autoThrottle is 0.
+
 lock STEERING to heading(90, 90).
 lock THROTTLE to autoThrottle.
 
 local startTime is TIME:SECONDS.
 
+resetHoverPID.
+
 abort off.
 until abort
 {
-	if SHIP:VERTICALSPEED > -1
-		set autoThrottle to pid(tgtAltitude, SHIP:APOAPSIS).// * 1/TWR.
-	else
-		set autoThrottle to pid(tgtAltitude, SHIP:ALTITUDE).// * 1/TWR.
-
+	set autoThrottle to hoverPID(tgtAltitude).
 	WAIT 0.001.
 }
+
 if KUNIVERSE:CANREVERT.
 KUNIVERSE:REVERTTOLAUNCH.
 
