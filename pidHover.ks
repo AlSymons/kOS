@@ -31,7 +31,7 @@ function hoverPID
 
 	local now is TIME:SECONDS.
 
-	local P is target - current.
+	local P is target - current. //TODO: curve function
 	local I is 0.
 	local D is 0.
 
@@ -68,14 +68,14 @@ local startTime is TIME:SECONDS.
 
 resetHoverPID.
 
-abort off.
-until abort
+//abort off.
+until 1//abort
 {
 	set autoThrottle to hoverPID(tgtAltitude).
 	WAIT 0.001.
 }
 
-if KUNIVERSE:CANREVERT.
-KUNIVERSE:REVERTTOLAUNCH.
+//if KUNIVERSE:CANREVERT
+//KUNIVERSE:REVERTTOLAUNCH.
 
-LOCK THROTTLE TO 0.
+//LOCK THROTTLE TO 0.

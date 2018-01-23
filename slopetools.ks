@@ -26,7 +26,7 @@ function terrainHeightAt
 
 function slopeAt
 {
-	parameter pos is SHIP:POSITION, sampleWidth is 5, numSamples is 3.
+	parameter pos is SHIP:POSITION, sampleWidth is 5, numSamples is 8.
 	local originHeight is terrainHeightAt(pos).
 	local maxDelta is 0.
 	local rot is 0.
@@ -55,8 +55,8 @@ function slopeAt
 	return arcsin(min(1,(maxDelta / sampleWidth))).
 }
 
-abort off.
-until abort
+//abort off.
+until 1//abort
 {
 	clearscreen.	
 	print "Altitude of terrain here: " + terrainHeightAt.
