@@ -1,12 +1,13 @@
-lock HRetrograde to VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:SRFRETROGRADE:VECTOR):NORMALIZED.
-lock killHVelVec to SHIP:UP:VECTOR + (HRetrograde * min(0.3,SHIP:GROUNDSPEED * 0.1)).
+local landingSightPos is BODY:GEOPOSITIONOF(SHIP:POSITION).
 
-//lock STEERING to (SHIP:SRFRETROGRADE:VECTOR + (UP:VECTOR * MAX(2,MIN(1,(1/SHIP:GROUNDSPEED^2))))).	
+lock shipBearingVec to VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:FACING:VECTOR):NORMALIZED.
+lock HRetrograde to VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:SRFRETROGRADE:VECTOR):NORMALIZED.
+lock killHVelVec to SHIP:UP:VECTOR + (HRetrograde              * min(0.3,SHIP:GROUNDSPEED * 0.1)).
+lock flyToLSVec to SHIP:UP:VECTOR  + (landingSightPos:POSITION:NORMALIZED * min(0.3,landingSightPos:POSITION:MAG * 0.1)). //0 normalized?
 
 runpath("0:/slopetools.ks").
 runpath("0:/pidHover.ks").
 
-local landingSightPos is V(0,0,0).
 
 function areaSlopeSearch
 {
@@ -32,21 +33,7 @@ function areaSlopeSearch
 		clearscreen.
 		print minSlope.
 		if minSlope < tgtSlope
-		{
-			set landingSightPos to pos + (bearingDir * R(0,rot,0)):VECTOR * sampleRadius.
-			if 1
-			{
-				SET landingSiteMarker TO VECDRAW(
-				  landingSightPos, //start
-				  SHIP:UP:VECTOR, //vector
-				  RGB(0,0,1), //colour
-				  "Landing Site", //words
-				  3.0, //scale
-				  TRUE, //show
-				  0.1 //width 
-				).
-			}
-		}
+			set landingSightPos to BODY:GEOPOSITIONOF(pos + (bearingDir * R(0,rot,0)):VECTOR * sampleRadius).
 
 
 		set sampleRadius to sampleRadius + sampleWidth * 4.
@@ -56,22 +43,18 @@ function areaSlopeSearch
 	return minSlope.
 }
 
-//if areaSlopeSearch(0.02) < 0.02
-//{
-//	lock throttle to hoverPID(100).
-//	abort off.
-//	wait until abort.
-//
-//
-//}
-//else
-	//print "can't find a flat enough landing site.".
 local autoThrottle is 0.
 lock throttle to autoThrottle.
 
-local mode is 1.
-local debug is false.
+local mode is 2.
+local debug is true.
+
 sas off.
+
+areaSlopeSearch.
+SteeringManager:RESETTODEFAULT().
+SET SteeringManager:ROLLTORQUEFACTOR to 0.
+
 abort off.
 until abort
 {
@@ -81,6 +64,13 @@ until abort
 		lock steering to killHVelVec.
 	}
 	
+	if mode = 2 //go to landing site
+	{
+		set autoThrottle to hoverPID(BODY:GEOPOSITIONOF(SHIP:POSITION):TERRAINHEIGHT + 100).
+		lock steering to flyToLSVec.
+	}
+	
+	
 	if debug
 	{
 		SET HRetrogradeDraw TO VECDRAW(
@@ -89,7 +79,7 @@ until abort
 		  RGB(0,0,1), //colour
 		  "HRetrograde", //words
 		  3.0, //scale
-		  TRUE, //show
+		  FALSE, //show
 		  0.1 //width 
 		).
 
@@ -99,7 +89,7 @@ until abort
 		  RGB(0,1,0), //colour
 		  "killHVelVec", //words
 		  3.0, //scale
-		  TRUE, //show
+		  FALSE, //show
 		  0.1 //width 
 		).
 		
@@ -109,10 +99,21 @@ until abort
 		  RGB(1,0,0), //colour
 		  "RGrade", //words
 		  3.0, //scale
+		  FALSE, //show
+		  0.1 //width 
+		).
+
+		SET landingSiteMarker TO VECDRAW(
+		  landingSightPos:POSITION, //start
+		  SHIP:UP:VECTOR, //vector
+		  RGB(0,0,1), //colour
+		  "Landing Site", //words
+		  3.0, //scale
 		  TRUE, //show
 		  0.1 //width 
 		).
 
+		
 	}
 		
 	wait 0.01.
