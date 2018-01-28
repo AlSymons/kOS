@@ -21,6 +21,8 @@ lock tgtHeadingVec to VECTOREXCLUDE(SHIP:UP:VECTOR,TARGET:POSITION).
 
 local steer is 0.
 local tgtSpeed is 0.
+local lastInput is TIME:SECONDS.
+local inputSettled is false.
 
 until SHIP:CONTROL:PILOTTOP <> 0 OR SHIP:ELECTRICCHARGE < 1//OR TARGET:POSITION:MAG < MAX(50,maxSpeed^2/2)
 {
@@ -31,6 +33,7 @@ until SHIP:CONTROL:PILOTTOP <> 0 OR SHIP:ELECTRICCHARGE < 1//OR TARGET:POSITION:
 	PRINT "Wheel Throttle: "+WHEELTHROTTLE+".".
 	PRINT " ".
 	PRINT "Angle to target: "+tgtAngle+".".
+	//TODO: fix ~0.5 degree persistant error driving certain rover. probably need a PID.
 	
 	if HASTARGET
 		set desiredHeadingVec to tgtHeadingVec.
@@ -67,26 +70,55 @@ until SHIP:CONTROL:PILOTTOP <> 0 OR SHIP:ELECTRICCHARGE < 1//OR TARGET:POSITION:
 		SET steer to steer/(SHIP:GROUNDSPEED*vehicleInstability).
 	else SET steer to 0. //wait until safe to turn
 
-	set SHIP:CONTROL:WHEELSTEER to steer.
-
 	//speed control
-	set tgtSpeed to MIN(maxSpeed,(45/(tgtAngle))+1).
-	lock WHEELTHROTTLE to 0.5*(tgtSpeed - SHIP:GROUNDSPEED).
-	set BRAKES to SHIP:GROUNDSPEED > tgtSpeed.
+	if inputSettled
+	{
+		set tgtSpeed to MIN(maxSpeed,(45/(tgtAngle))+1).
+		lock WHEELTHROTTLE to 0.5*(tgtSpeed - SHIP:GROUNDSPEED).
+		set BRAKES to SHIP:GROUNDSPEED > tgtSpeed.
+	}
 	
 	//indirect pilot steering
-	if SHIP:CONTROL:PILOTYAW < 0
-		set desiredHeadingVec to (LOOKDIRUP(desiredHeadingVec,SHIP:UP:VECTOR) * R(0,-1,0)):VECTOR.
-	else if SHIP:CONTROL:PILOTYAW > 0
-		set desiredHeadingVec to (LOOKDIRUP(desiredHeadingVec,SHIP:UP:VECTOR) * R(0, 1,0)):VECTOR.
+	if SHIP:CONTROL:PILOTYAW <> 0
+	{
+		set lastInput to TIME:SECONDS.
+		set SHIP:CONTROL:WHEELSTEER to 0.
+		set inputSettled to false.
+	}
+
+	if TIME:SECONDS - lastInput > 3
+	{
+		set SHIP:CONTROL:WHEELSTEER to steer.
+		
+		if not inputSettled
+		{
+			set desiredHeadingVec to headingVec.
+			set inputSettled to true.
+		}
+	}
+	
+//		set desiredHeadingVec to (LOOKDIRUP(desiredHeadingVec,SHIP:UP:VECTOR) * R(0,-1,0)):VECTOR.
+	//else if SHIP:CONTROL:PILOTYAW > 0
+		//set desiredHeadingVec to (LOOKDIRUP(desiredHeadingVec,SHIP:UP:VECTOR) * R(0, 1,0)):VECTOR.
 	
 	//cruise control
 	if SHIP:CONTROL:PILOTPITCH < 0
 		set maxSpeed to round(maxSpeed + 0.1,2).
 	else if SHIP:CONTROL:PILOTPITCH > 0
 		set maxSpeed to round(maxSpeed - 0.1,2).
+
+	if 0
+	SET desiredHeadingVecDraw TO VECDRAW(
+		  V(0,0,0), //start
+		  desiredHeadingVec, //vector
+		  RGB(0.5,0.5,0.5), //colour
+		  "Desired Heading", //words
+		  3.0, //scale
+		  TRUE, //show
+		  0.1 //width 
+		).
 	
-	wait 0.1.
+	wait 0.01.
 	clearscreen.
 }
 
