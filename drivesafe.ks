@@ -118,7 +118,7 @@ until SHIP:CONTROL:PILOTTOP <> 0 OR SHIP:ELECTRICCHARGE < 1//OR TARGET:POSITION:
 		  0.1 //width 
 		).
 	
-	wait 0.01.
+	wait 0.1.
 	clearscreen.
 }
 

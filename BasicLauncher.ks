@@ -94,7 +94,7 @@ PRINT "Target apoapsis achieved. Awaiting atmospheric escape.".
 LOCK THROTTLE TO 0.
 
 SET KUNIVERSE:TIMEWARP:MODE TO "PHYSICS".
-SET WARP TO 3.
+//SET WARP TO 3.
 
 WAIT UNTIL ALTITUDE > 70000.
 

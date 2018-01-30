@@ -48,12 +48,27 @@ lock throttle to autoThrottle.
 
 local mode is 2.
 local debug is true.
+local landingSiteReset is TIME:SECONDS.
+
+local desiredVelocityVec is V(0,0,0).
+local velocityToKill is V(0,0,0).
 
 sas off.
+
+lock steering to heading(0,90).
+until VANG(SHIP:FACING:VECTOR,SHIP:UP:VECTOR) < 1 and SHIP:VERTICALSPEED > 0
+	set autoThrottle to verticalSpeedP(0.1).
 
 areaSlopeSearch.
 SteeringManager:RESETTODEFAULT().
 SET SteeringManager:ROLLTORQUEFACTOR to 0.
+
+until time:seconds > landingSiteReset + 10
+	set autoThrottle to hoverPID(BODY:GEOPOSITIONOF(SHIP:POSITION):TERRAINHEIGHT + 100).
+
+local anglePIDlimit is 0.1.
+local anglePID is pidLoop(1,0.1,0.1,-anglePIDlimit,anglePIDlimit).
+//print "anglePID setpoint: " + anglePID:SETPOINT. //0.
 
 abort off.
 until abort
@@ -66,13 +81,33 @@ until abort
 	
 	if mode = 2 //go to landing site
 	{
-		set autoThrottle to hoverPID(BODY:GEOPOSITIONOF(SHIP:POSITION):TERRAINHEIGHT + 100).
-		lock steering to flyToLSVec.
+		set autoThrottle to max(verticalSpeedP(-6), hoverPID(BODY:GEOPOSITIONOF(SHIP:POSITION):TERRAINHEIGHT + 30)).
+		
+		set desiredVelocityVec to VECTOREXCLUDE(SHIP:UP:VECTOR,landingSightPos:POSITION).
+		local distance is desiredVelocityVec:MAG.
+
+		set desiredVelocityVec to desiredVelocityVec:NORMALIZED.// *0.1.// * min(10,(distance * 0.1)^2).
+		set desiredVelocityVec to desiredVelocityVec * 0.5.
+
+		clearscreen.
+		print "distance to landing site: " + distance.
+		print "Target Horizontal Speed: " + desiredVelocityVec:MAG.
+		set velocityToKill to desiredVelocityVec - VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:SRFPROGRADE:VECTOR).
+		
+		
+		local adjustSpeedVec is SHIP:UP:VECTOR + (velocityToKill * -anglePID:update(TIME:SECONDS,velocityToKill:MAG)).
+		lock steering to adjustSpeedVec.
 	}
 	
 	
 	if debug
 	{
+		if time:seconds > landingSiteReset + 60
+		{
+			areaSlopeSearch.
+			set landingSiteReset to TIME:SECONDS.
+		}
+		
 		SET HRetrogradeDraw TO VECDRAW(
 		  V(0,0,0), //start
 		  HRetrograde, //vector
@@ -80,16 +115,16 @@ until abort
 		  "HRetrograde", //words
 		  3.0, //scale
 		  FALSE, //show
-		  0.1 //width 
+		  0.1 //width
 		).
 
-		SET killHVelVecDraw TO VECDRAW(
+		SET velocityToKillDraw TO VECDRAW(
 		  V(0,0,0), //start
-		  killHVelVec, //vector
+		  velocityToKill, //vector
 		  RGB(0,1,0), //colour
-		  "killHVelVec", //words
+		  "velocityToKill", //words
 		  3.0, //scale
-		  FALSE, //show
+		  True, //show
 		  0.1 //width 
 		).
 		
@@ -113,6 +148,25 @@ until abort
 		  0.1 //width 
 		).
 
+		SET desiredVelocityVecDraw TO VECDRAW(
+		  V(0,0,0), //start
+		  desiredVelocityVec, //vector
+		  RGB(0,0.5,0.5), //colour
+		  "desired Velocity", //words
+		  3.0, //scale
+		  TRUE, //show
+		  0.1 //width 
+		).
+
+		SET currentVelocityVecDraw TO VECDRAW(
+		  V(0,0,0), //start
+		  VXCL(SHIP:UP:VECTOR,SHIP:SRFPROGRADE:VECTOR), //vector
+		  RGB(0.5,0,0), //colour
+		  "current velocity", //words
+		  3.0, //scale
+		  TRUE, //show
+		  0.1 //width 
+		).
 		
 	}
 		

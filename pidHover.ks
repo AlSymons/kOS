@@ -91,7 +91,7 @@ function hoverPID
 	local output is P * mP + I * mI + D * mD.
 	set output to vertSpeedClamp(output).
 	
-	if 1
+	if 0 //testing
 	{
 		clearscreen.
 		print "Target: " + target.
