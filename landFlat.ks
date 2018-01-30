@@ -86,13 +86,12 @@ until abort
 		set desiredVelocityVec to VECTOREXCLUDE(SHIP:UP:VECTOR,landingSightPos:POSITION).
 		local distance is desiredVelocityVec:MAG.
 
-		set desiredVelocityVec to desiredVelocityVec:NORMALIZED.// *0.1.// * min(10,(distance * 0.1)^2).
-		set desiredVelocityVec to desiredVelocityVec * 0.5.
-
+		set desiredVelocityVec to desiredVelocityVec:NORMALIZED * min(10,(distance * 0.2)).
+		
 		clearscreen.
 		print "distance to landing site: " + distance.
 		print "Target Horizontal Speed: " + desiredVelocityVec:MAG.
-		set velocityToKill to desiredVelocityVec - VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:SRFPROGRADE:VECTOR).
+		set velocityToKill to desiredVelocityVec - VECTOREXCLUDE(SHIP:UP:VECTOR,(SHIP:SRFPROGRADE:VECTOR * SHIP:GROUNDSPEED)).
 		
 		
 		local adjustSpeedVec is SHIP:UP:VECTOR + (velocityToKill * -anglePID:update(TIME:SECONDS,velocityToKill:MAG)).
@@ -102,7 +101,7 @@ until abort
 	
 	if debug
 	{
-		if time:seconds > landingSiteReset + 60
+		if time:seconds > landingSiteReset + 30
 		{
 			areaSlopeSearch.
 			set landingSiteReset to TIME:SECONDS.
@@ -160,7 +159,7 @@ until abort
 
 		SET currentVelocityVecDraw TO VECDRAW(
 		  V(0,0,0), //start
-		  VXCL(SHIP:UP:VECTOR,SHIP:SRFPROGRADE:VECTOR), //vector
+		  VXCL(SHIP:UP:VECTOR,(SHIP:SRFPROGRADE:VECTOR * SHIP:GROUNDSPEED)), //vector
 		  RGB(0.5,0,0), //colour
 		  "current velocity", //words
 		  3.0, //scale
