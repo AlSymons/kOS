@@ -4,15 +4,17 @@ lock shipBearingVec to VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:FACING:VECTOR):NORMALIZ
 lock HRetrograde to VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:SRFRETROGRADE:VECTOR):NORMALIZED.
 lock killHVelVec to SHIP:UP:VECTOR + (HRetrograde              * min(0.3,SHIP:GROUNDSPEED * 0.1)).
 lock flyToLSVec to SHIP:UP:VECTOR  + (landingSightPos:POSITION:NORMALIZED * min(0.3,landingSightPos:POSITION:MAG * 0.1)). //0 normalized?
+wait until ship:maxthrust > 0.
+lock gravityHere to CONSTANT:G*BODY:MASS/((SHIP:ALTITUDE+BODY:RADIUS)^2).
+lock TWR to SHIP:MAXTHRUST/(gravityHere*SHIP:MASS).
 
 runpath("0:/slopetools.ks").
 runpath("0:/pidHover.ks").
 
-
 function areaSlopeSearch
 {
-	parameter tgtSlope is 0.02, pos is SHIP:POSITION, samplewidth is 1, maxSamples is 1000.
-	
+	parameter tgtSlope is 0, pos is SHIP:POSITION, samplewidth is 1, maxSamples is 1000.
+
 	local minSlope is 90.
 	local rot is 0.
 	local bearingDir is LOOKDIRUP(shipBearingVec,SHIP:UP:VECTOR).
@@ -31,6 +33,7 @@ function areaSlopeSearch
 		}
 
 		clearscreen.
+		print pos.
 		print minSlope.
 		if minSlope < tgtSlope
 			set landingSightPos to BODY:GEOPOSITIONOF(pos + (bearingDir * R(0,rot,0)):VECTOR * sampleRadius).
@@ -47,21 +50,22 @@ local autoThrottle is 0.
 lock throttle to autoThrottle.
 
 local mode is 2.
-local debug is true.
+local debug is false.
 local landingSiteReset is TIME:SECONDS.
 
 local desiredVelocityVec is V(0,0,0).
 local velocityToKill is V(0,0,0).
 
 sas off.
-
-lock steering to heading(0,90).
-until VANG(SHIP:FACING:VECTOR,SHIP:UP:VECTOR) < 1 and SHIP:VERTICALSPEED > 0
-	set autoThrottle to verticalSpeedP(0.1).
-
-areaSlopeSearch.
 SteeringManager:RESETTODEFAULT().
 SET SteeringManager:ROLLTORQUEFACTOR to 0.
+
+lock steering to killHVelVec.
+wait until VANG(SHIP:UP:VECTOR,SHIP:FACING:VECTOR) < 90.
+until SHIP:GROUNDSPEED < 50 and SHIP:VERTICALSPEED > -1
+	set autoThrottle to verticalSpeedP(0).
+
+areaSlopeSearch.
 
 until time:seconds > landingSiteReset + 10
 	set autoThrottle to hoverPID(BODY:GEOPOSITIONOF(SHIP:POSITION):TERRAINHEIGHT + 100).
@@ -71,7 +75,7 @@ local anglePID is pidLoop(1,0.1,0.1,-anglePIDlimit,anglePIDlimit).
 //print "anglePID setpoint: " + anglePID:SETPOINT. //0.
 
 abort off.
-until abort
+until abort or SHIP:STATUS = "Landed"
 {
 	if mode = 1 //loiter
 	{
@@ -81,23 +85,33 @@ until abort
 	
 	if mode = 2 //go to landing site
 	{
-		set autoThrottle to max(verticalSpeedP(-6), hoverPID(BODY:GEOPOSITIONOF(SHIP:POSITION):TERRAINHEIGHT + 30)).
+		set autoThrottle to max(verticalSpeedP(-20), hoverPID(BODY:GEOPOSITIONOF(SHIP:POSITION):TERRAINHEIGHT + 30)).
 		
 		set desiredVelocityVec to VECTOREXCLUDE(SHIP:UP:VECTOR,landingSightPos:POSITION).
 		local distance is desiredVelocityVec:MAG.
 
-		set desiredVelocityVec to desiredVelocityVec:NORMALIZED * min(10,(distance * 0.2)).
+		set desiredVelocityVec to desiredVelocityVec:NORMALIZED * min(50,(distance * 0.2)).
 		
 		clearscreen.
 		print "distance to landing site: " + distance.
 		print "Target Horizontal Speed: " + desiredVelocityVec:MAG.
 		set velocityToKill to desiredVelocityVec - VECTOREXCLUDE(SHIP:UP:VECTOR,(SHIP:SRFPROGRADE:VECTOR * SHIP:GROUNDSPEED)).
 		
+		if velocityToKill:MAG > 20
+			set velocityToKill to velocityToKill:NORMALIZED * 20.
 		
 		local adjustSpeedVec is SHIP:UP:VECTOR + (velocityToKill * -anglePID:update(TIME:SECONDS,velocityToKill:MAG)).
 		lock steering to adjustSpeedVec.
+		
+		if distance < 1 and SHIP:GROUNDSPEED < 0.2
+			set mode to 3.
 	}
 	
+	if mode = 3 //land
+	{
+		set autoThrottle to verticalSpeedP(-0.1-ALT:RADAR). 
+		lock steering to killHVelVec.
+	}
 	
 	if debug
 	{
@@ -172,4 +186,7 @@ until abort
 	wait 0.01.
 	
 }
+set SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
+unlock all.
 clearvecdraws().
+SteeringManager:RESETTODEFAULT().
