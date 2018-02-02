@@ -1,4 +1,5 @@
 local landingSightPos is BODY:GEOPOSITIONOF(SHIP:POSITION).
+local hoverHeight is 30.
 
 lock shipBearingVec to VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:FACING:VECTOR):NORMALIZED.
 lock HRetrograde to VECTOREXCLUDE(SHIP:UP:VECTOR,SHIP:SRFRETROGRADE:VECTOR):NORMALIZED.
@@ -85,7 +86,7 @@ until abort or SHIP:STATUS = "Landed"
 	
 	if mode = 2 //go to landing site
 	{
-		set autoThrottle to max(verticalSpeedP(-20), hoverPID(BODY:GEOPOSITIONOF(SHIP:POSITION):TERRAINHEIGHT + 30)).
+		set autoThrottle to max(verticalSpeedP(-hoverHeight), hoverPID(BODY:GEOPOSITIONOF(SHIP:POSITION):TERRAINHEIGHT + hoverHeight)).
 		
 		set desiredVelocityVec to VECTOREXCLUDE(SHIP:UP:VECTOR,landingSightPos:POSITION).
 		local distance is desiredVelocityVec:MAG.
